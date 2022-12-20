@@ -111,12 +111,12 @@ if st.sidebar.button("Crypter"):
     else:
         crypte = vigenere_crypte(text, key)
     st.success("Message crypté : {}".format(crypte))
-    
+
 
 if st.sidebar.button("Décrypter"):
     if algorithm == "César":
-        decrypte = cesar_crypte(crypte, dec)
+        decrypte = cesar_decrypte(text, dec)
 
     else:
-        decrypte = vigenere_decrypte(crypte, key)
+        decrypte = vigenere_decrypte(text, key)
     st.success("Message décrypté : {}".format(decrypte))
