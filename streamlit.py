@@ -1,35 +1,18 @@
 # IMPORTS
 
 import streamlit as st
-import random
 from random import *
-import math
-
-# FONCTIONS AIDE
-
-def get_index(ele,py_list):
-  index = 0
-
-  for i in range(len(py_list)):
-    if py_list[i] == ele:
-      index = i
-
-  return index
-
-def common_data(list1, list2):
-    result = False
-  
-    for x in list1:
-        for y in list2:
-            if x == y:
-                result = True
-                return result 
-                  
-    return result
 
 # ALGOS
 
 def cesar_crypte(text, dec):
+    '''
+    Fonction de cryptage de César
+    text (str) : message à crypter
+    dec (int) : décalage à utiliser pour le cryptage
+    Retourne (str) : message crypté
+    '''
+
     new_text = ""
 
     for ele in text:
@@ -47,6 +30,13 @@ def cesar_crypte(text, dec):
     return new_text
 
 def cesar_decrypte(text, dec):
+    '''
+    Fonction de décryptage de César
+    text (str) : message crypté
+    dec (int) : décalage à utiliser pour le décryptage
+    Retourne (str) : message décrypté
+    '''
+
     new_text = ""
 
     for ele in text:
@@ -63,9 +53,14 @@ def cesar_decrypte(text, dec):
 
     return new_text
 
-#----------------------------------------------
-
 def vigenere_crypte(text, key):
+    '''
+    Fonction de cryptage de Vigenère
+    text (str) : message à crypter
+    key (str) : clé de cryptage à utiliser
+    Retourne (str) : message crypté
+    '''
+
     key_len = len(key)
     key_int = [ord(i) for i in key]
     text_int = [ord(i) for i in text]
@@ -76,6 +71,13 @@ def vigenere_crypte(text, key):
     return text
 
 def vigenere_decrypte(text, key):
+    '''
+    Fonction de décryptage de Vigenère
+    text (str) : message crypté
+    key (str) : clé de décryptage à utiliser
+    Retourne (str) : message décrypté
+    '''
+    
     key_len = len(key)
     key_int = [ord(i) for i in key]
     text_int = [ord(i) for i in text]
@@ -88,22 +90,25 @@ def vigenere_decrypte(text, key):
 
 # CODE DU SITE
 
-st.sidebar.title("Cryptage Et Decryptage Du Texte De Votre Choix")
-algorithm = st.sidebar.selectbox("Choisissez Un Algorithme", ["Cesar", "Vigenere"])
-  
-input_text = st.text_area("Votre Texte")
-output_text = ""
-  
-if algorithm == "Cesar":
-    if st.button("Crypter"):
-        output_text = cesar_crypte(input_text)
-    if st.button("Decrypter"):
-        output_text = cesar_decrypte(input_text)
+st.sidebar.header("Cryptage/décryptage du message")
 
-elif algorithm == "Vigenere":
-    if st.button("Crypter"):
-        output_text = vigenere_crypte(input_text)
-    if st.button("Decrypter"):
-        output_text = vigenere_decrypte(input_text)
-  
-st.write(output_text)
+algorithm = st.sidebar.selectbox("Algorithme", ["César", "Vigenère"])
+message = st.sidebar.text_input("Message")
+if algorithm == "César":
+    shift = st.sidebar.number_input("Décalage", min_value=0, max_value=25)
+else:
+    key = st.sidebar.text_input("Clé")
+
+if st.sidebar.button("Crypter"):
+    if algorithm == "César":
+        encrypted = cesar_crypte(message, shift)
+    else:
+        encrypted = vigenere_crypte(message, key)
+    st.success("Message crypté : {}".format(encrypted))
+
+if st.sidebar.button("Décrypter"):
+    if algorithm == "César":
+        decrypted = cesar_crypte(encrypted, shift)
+    else:
+        decrypted = vigenere_decrypte(encrypted, key)
+    st.success("Message décrypté : {}".format(decrypted))
