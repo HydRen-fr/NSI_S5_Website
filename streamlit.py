@@ -175,17 +175,17 @@ def rsa_decrypte(encrypted_text, d, n):
 
 # CODE DU SITE
 
-'''
+st.write('''
 Ce code permet de créer une interface pour crypter et décrypter un message en utilisant différents algorithmes de chiffrement. 
 L'utilisateur peut sélectionner l'algorithme de son choix dans un menu déroulant et entrer le message à crypter ou décrypter dans un champ de texte.
- 
+
 Pour l'algorithme de César, l'utilisateur doit également entrer un décalage. 
 Pour l'algorithme de Vigenère, il doit entrer une clé. 
 Pour l'algorithme RSA, il doit entrer deux nombres premiers.
 
 En cliquant sur le bouton "Crypter", le message est crypté en utilisant l'algorithme sélectionné et en utilisant les paramètres spécifiés par l'utilisateur. 
 En cliquant sur le bouton "Décrypter", le message est décrypté en utilisant l'algorithme sélectionné et en utilisant les paramètres spécifiés par l'utilisateur.
-'''
+''')
 
 st.sidebar.header("Cryptage/décryptage du message")
 
@@ -196,6 +196,8 @@ st.sidebar.info('RSA est un algorithme de cryptage asymétrique qui utilise une 
 
 text = st.sidebar.text_input("Message")
 
+
+
 if algorithm == "César":
     dec = st.sidebar.number_input("Décalage", min_value=0, max_value=25)
 
@@ -203,10 +205,12 @@ elif algorithm == "Vigenère":
     key = st.sidebar.text_input("Clé")
 
 elif algorithm == "RSA":
-    p = st.sidebar.number_input("Premier nombre premier", min_value=2, max_value=1000)
-    q = st.sidebar.number_input("Deuxième nombre premier", min_value=2, max_value=1000)
+    p = st.sidebar.number_input("Nombre premier p", min_value=2, max_value=1000)
+    q = st.sidebar.number_input("Nombre premier q", min_value=2, max_value=1000)
     # Generate the keys
     public_key, private_key = rsa_keygen(p, q)
+
+
 
 if st.sidebar.button("Crypter"):
     if algorithm == "César":
