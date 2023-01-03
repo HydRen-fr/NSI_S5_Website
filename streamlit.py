@@ -1,10 +1,14 @@
 # IMPORTS
 
+# On importe les bibliothèques nécessaires pour le code
+
 import streamlit as st
 from random import *
 from math import *
 
 # ALGOS
+
+# On définit une fonction de cryptage de César
 
 def cesar_crypte(text, dec):
     '''
@@ -16,9 +20,11 @@ def cesar_crypte(text, dec):
 
     new_text = ""
 
+    # On parcourt chaque élément du message à crypter
     for ele in text:
-
+        # Si c'est une lettre
         if ele.isalpha():
+            # On calcule le code ASCII du nouvel élément en faisant un décalage de "dec" lettres par rapport à l'élément d'origine
             new_ele = chr((ord(ele.upper()) + dec - 65) % 26 + 65)
             if ele.isupper():
                 new_text += new_ele
@@ -29,6 +35,8 @@ def cesar_crypte(text, dec):
             new_text += ele
 
     return new_text
+
+# On définit une fonction de decryptage de César
 
 def cesar_decrypte(text, dec):
     '''
@@ -54,6 +62,8 @@ def cesar_decrypte(text, dec):
 
     return new_text
 
+# On définit une fonction de cryptage de Vigenère
+
 def vigenere_crypte(text, key):
     '''
     Fonction de cryptage de Vigenère
@@ -62,17 +72,19 @@ def vigenere_crypte(text, key):
     Retourne (str) : message crypté
     '''
 
-    # Make sure that the key only contains uppercase letters
+    # On s'assure que la clé ne contient que des lettres en majuscule
     key = key.upper()
     key = key.replace(' ', '')
 
     key_len = len(key)
-    key_int = [ord(i) - 65 for i in key]  # Shift the ordinal values to start at 0
+    # On calcule les codes ASCII de chaque lettre de la clé en décalant les valeurs ordinales de 65 (pour qu'elles commencent à 0)
+    key_int = [ord(i) - 65 for i in key]  
     text_int = [ord(i) for i in text]
     crypted_text = ''
     key_index = 0
     for char in text:
-        if char.isalpha():  # Only encrypt letters, not spaces or other characters
+        # Si c'est une lettre
+        if char.isalpha():
             shift = key_int[key_index % key_len]
             crypted_char = chr((ord(char) + shift - 65) % 26 + 65)
             key_index += 1
@@ -80,6 +92,8 @@ def vigenere_crypte(text, key):
             crypted_char = char
         crypted_text += crypted_char
     return crypted_text
+
+# On définit une fonction de decryptage de Vigenère
 
 def vigenere_decrypte(text, key):
     '''
@@ -89,17 +103,16 @@ def vigenere_decrypte(text, key):
     Retourne (str) : message décrypté
     '''
 
-    # Make sure that the key only contains uppercase letters
     key = key.upper()
     key = key.replace(' ', '')
 
     key_len = len(key)
-    key_int = [ord(i) - 65 for i in key]  # Shift the ordinal values to start at 0
+    key_int = [ord(i) - 65 for i in key]
     text_int = [ord(i) for i in text]
     decrypted_text = ''
     key_index = 0
     for char in text:
-        if char.isalpha():  # Only decrypt letters, not spaces or other characters
+        if char.isalpha():
             shift = key_int[key_index % key_len]
             decrypted_char = chr((ord(char) - shift - 65) % 26 + 65)
             key_index += 1
@@ -107,6 +120,8 @@ def vigenere_decrypte(text, key):
             decrypted_char = char
         decrypted_text += decrypted_char
     return decrypted_text
+
+# On définit une fonction de géneration de clés RSA
 
 def rsa_keygen(p, q):
     '''
@@ -117,15 +132,17 @@ def rsa_keygen(p, q):
     '''
     n = p * q
     phi = (p - 1) * (q - 1)
-    # Choose an integer e such that e and phi(n) are coprime
+    # Choisissez un entier e tel que e et phi(n) sont copremiers
     e = 2
     while gcd(e, phi) != 1:
         e += 1
-    # Compute the secret exponent d such that d * e = 1 (mod phi(n))
+    # Calculer l'exposant secret d tel que d * e = 1 (mod phi(n))
     d = 1
     while (d * e) % phi != 1:
         d += 1
     return (e, n), (d, n)
+
+# On définit une fonction de cryptage de RSA
 
 def rsa_crypte(text, e, n):
     '''
@@ -135,9 +152,13 @@ def rsa_crypte(text, e, n):
     n (int) : module
     Retourne (list) : message crypté sous forme de liste de nombres
     '''
+    # On calcule les codes ASCII de chaque lettre de text
     text_int = [ord(i) for i in text]
+    # Calculs mathématiques
     encrypted_text = [pow(i, e, n) for i in text_int]
     return encrypted_text
+
+# On définit une fonction de decryptage de RSA
 
 def rsa_decrypte(encrypted_text, d, n):
     '''
@@ -154,10 +175,21 @@ def rsa_decrypte(encrypted_text, d, n):
 
 # CODE DU SITE
 
+'''
+Ce code permet de créer une interface pour crypter et décrypter un message en utilisant différents algorithmes de chiffrement. 
+L'utilisateur peut sélectionner l'algorithme de son choix dans un menu déroulant et entrer le message à crypter ou décrypter dans un champ de texte.
+ 
+Pour l'algorithme de César, l'utilisateur doit également entrer un décalage. 
+Pour l'algorithme de Vigenère, il doit entrer une clé. 
+Pour l'algorithme RSA, il doit entrer deux nombres premiers.
+
+En cliquant sur le bouton "Crypter", le message est crypté en utilisant l'algorithme sélectionné et en utilisant les paramètres spécifiés par l'utilisateur. 
+En cliquant sur le bouton "Décrypter", le message est décrypté en utilisant l'algorithme sélectionné et en utilisant les paramètres spécifiés par l'utilisateur.
+'''
+
 st.sidebar.header("Cryptage/décryptage du message")
 
-algorithm = st.sidebar.selectbox("Algorithme", ["César", "Vigenère", "RSA"],
-                                 format_func=lambda x: x + ' ?')
+algorithm = st.sidebar.selectbox("Algorithme", ["César", "Vigenère", "RSA"])
 st.sidebar.info('Le chiffre de César consiste à décaler chaque lettre du message de N positions dans l\'alphabet')
 st.sidebar.info('Le chiffre de Vigenère consiste à utiliser une clé pour crypter le message avec le chiffre de César')
 st.sidebar.info('RSA est un algorithme de cryptage asymétrique qui utilise une clé publique et une clé privée')
