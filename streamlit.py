@@ -164,13 +164,13 @@ def rsa_crypte(text, e, n):
     text (str) : message à crypter
     e (int) : exposant de cryptage
     n (int) : module
-    Retourne (list) : message crypté sous forme de liste de nombres
+    Retourne (str) : message crypté sous forme de nombres separés d'espaces
     '''
     # On calcule les codes ASCII de chaque lettre de text
     text_int = [ord(i) for i in text]
     # Calculs mathématiques
     encrypted_text = [pow(i, e, n) for i in text_int]
-    " ".join(encrypted_text)
+    encrypted_text = " ".join(map(str,encrypted_text))
     return encrypted_text
 
 # On définit une fonction de decryptage de RSA
@@ -178,7 +178,7 @@ def rsa_crypte(text, e, n):
 def rsa_decrypte(encrypted_text, d, n):
     '''
     Fonction de décryptage RSA
-    encrypted_text (list) : message crypté sous forme de liste de nombres
+    encrypted_text (str) : message crypté sous forme de nombres separés d'espaces
     d (int) : exposant de décryptage
     n (int) : module
     Retourne (str) : message décrypté
