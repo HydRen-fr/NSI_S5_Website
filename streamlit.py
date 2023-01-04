@@ -4,7 +4,7 @@
 
 import streamlit as st
 from random import *
-import math
+# import math
 from math import gcd
 
 # ALGOS
@@ -169,7 +169,7 @@ def rsa_crypte(text, e, n):
     # On calcule les codes ASCII de chaque lettre de text
     text_int = [ord(i) for i in text]
     # Calculs mathématiques
-    encrypted_text = [math.pow(i, e, n) for i in text_int]
+    encrypted_text = [pow(i, e, n) for i in text_int]
     return encrypted_text
 
 # On définit une fonction de decryptage de RSA
@@ -182,7 +182,7 @@ def rsa_decrypte(encrypted_text, d, n):
     n (int) : module
     Retourne (str) : message décrypté
     '''
-    decrypted_text = [chr(math.pow(i, d, n)) for i in encrypted_text]
+    decrypted_text = [chr(pow(i, d, n)) for i in encrypted_text]
     return ''.join(decrypted_text)
 
 
