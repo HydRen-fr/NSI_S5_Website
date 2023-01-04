@@ -86,12 +86,18 @@ def vigenere_crypte(text, key):
         # Si c'est une lettre
         if char.isalpha():
             shift = key_int[key_index % key_len]
-            crypted_char = chr((ord(char) + shift - 65) % 26 + 65)
+            # On utilise la fonction chr() pour récupérer la lettre cryptée
+            # en fonction de son code ASCII et de la casse du message original
+            if char.isupper():
+                crypted_char = chr(((ord(char) - 65) + shift) % 26 + 65)
+            else:
+                crypted_char = chr(((ord(char) - 97) + shift) % 26 + 97)
             key_index += 1
         else:
             crypted_char = char
         crypted_text += crypted_char
     return crypted_text
+
 
 # On définit une fonction de decryptage de Vigenère
 
@@ -114,12 +120,18 @@ def vigenere_decrypte(text, key):
     for char in text:
         if char.isalpha():
             shift = key_int[key_index % key_len]
-            decrypted_char = chr((ord(char) - shift - 65) % 26 + 65)
+            # On utilise la fonction chr() pour récupérer la lettre originale
+            # en fonction de son code ASCII et de la casse du message original
+            if char.isupper():
+                decrypted_char = chr(((ord(char) - 65) - shift) % 26 + 65)
+            else:
+                decrypted_char = chr(((ord(char) - 97) - shift) % 26 + 97)
             key_index += 1
         else:
             decrypted_char = char
         decrypted_text += decrypted_char
     return decrypted_text
+
 
 # On définit une fonction de géneration de clés RSA
 
