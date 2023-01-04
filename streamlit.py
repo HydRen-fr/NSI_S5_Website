@@ -170,6 +170,7 @@ def rsa_crypte(text, e, n):
     text_int = [ord(i) for i in text]
     # Calculs mathématiques
     encrypted_text = [pow(i, e, n) for i in text_int]
+    " ".join(encrypted_text)
     return encrypted_text
 
 # On définit une fonction de decryptage de RSA
@@ -182,6 +183,7 @@ def rsa_decrypte(encrypted_text, d, n):
     n (int) : module
     Retourne (str) : message décrypté
     '''
+    encrypted_text = encrypted_text.split()
     decrypted_text = [chr(pow(int(i), d, n)) for i in encrypted_text]
     return ''.join(decrypted_text)
 
