@@ -175,19 +175,10 @@ def rsa_decrypte(encrypted_text, d, n):
 
 # CODE DU SITE
 
-st.markdown('''
-**
+'''
 Ce code permet de créer une interface pour crypter et décrypter un message en utilisant différents algorithmes de chiffrement. 
 L'utilisateur peut sélectionner l'algorithme de son choix dans un menu déroulant et entrer le message à crypter ou décrypter dans un champ de texte.
-
-Pour l'algorithme de César, l'utilisateur doit également entrer un décalage. 
-Pour l'algorithme de Vigenère, il doit entrer une clé. 
-Pour l'algorithme RSA, il doit entrer deux nombres premiers.
-
-En cliquant sur le bouton "Crypter", le message est crypté en utilisant l'algorithme sélectionné et en utilisant les paramètres spécifiés par l'utilisateur. 
-En cliquant sur le bouton "Décrypter", le message est décrypté en utilisant l'algorithme sélectionné et en utilisant les paramètres spécifiés par l'utilisateur.
-**
-''')
+'''
 
 st.sidebar.header("Cryptage/décryptage du message")
 
@@ -198,7 +189,11 @@ st.sidebar.info('RSA est un algorithme de cryptage asymétrique qui utilise une 
 
 text = st.sidebar.text_input("Message")
 
-
+'''
+Pour l'algorithme de César, l'utilisateur doit également entrer un décalage. 
+Pour l'algorithme de Vigenère, il doit entrer une clé. 
+Pour l'algorithme RSA, il doit entrer deux nombres premiers.
+'''
 
 if algorithm == "César":
     dec = st.sidebar.number_input("Décalage", min_value=0, max_value=25)
@@ -212,7 +207,10 @@ elif algorithm == "RSA":
     # Generate the keys
     public_key, private_key = rsa_keygen(p, q)
 
-
+'''
+En cliquant sur les boutons "Crypter" ou "Décrypter", le message est transformé en utilisant l'algorithme sélectionné et 
+en utilisant les paramètres spécifiés par l'utilisateur. 
+'''
 
 if st.sidebar.button("Crypter"):
     if algorithm == "César":
@@ -221,7 +219,7 @@ if st.sidebar.button("Crypter"):
         crypte = vigenere_crypte(text, key)
     elif algorithm == "RSA":
         crypte = rsa_crypte(text, *public_key)
-    st.success(crypte, icon="✅")
+    st.success(crypte, icon=None)
 
 if st.sidebar.button("Décrypter"):
     if algorithm == "César":
@@ -230,4 +228,4 @@ if st.sidebar.button("Décrypter"):
         decrypte = vigenere_decrypte(text, key)
     elif algorithm == "RSA":
         decrypte = rsa_decrypte(text, *private_key)
-    st.success(decrypte, icon="✅")
+    st.success(decrypte, icon=None)
