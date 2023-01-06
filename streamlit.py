@@ -4,7 +4,6 @@
 
 import streamlit as st
 from random import *
-# import math
 from math import gcd
 
 # ALGOS
@@ -221,7 +220,8 @@ elif algorithm == "RSA":
     q = st.sidebar.number_input("Nombre premier q", min_value=2, max_value=1000)
     # Generate the keys
     public_key, private_key = rsa_keygen(p, q)
-
+    st.write("Clef publique: ", public_key)
+    st.write("Clef privée: ", private_key)
 
 # En cliquant sur les boutons "Crypter" ou "Décrypter", le message est transformé en utilisant l'algorithme sélectionné et 
 # en utilisant les paramètres spécifiés par l'utilisateur. 
