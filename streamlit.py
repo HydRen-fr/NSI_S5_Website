@@ -167,9 +167,11 @@ if st.sidebar.button("Crypter"):
         crypte = cesar_crypte(text, dec)
     elif algorithm == "Vigenère":
         crypte = vigenere_crypte(text, key)
+    st.success(crypte, icon=None)
 
 if st.sidebar.button("Décrypter"):
     if algorithm == "César":
         decrypte = cesar_decrypte(text, dec)
     elif algorithm == "Vigenère":
         decrypte = vigenere_decrypte(text, key)
+    st.success(decrypte, icon=None)
