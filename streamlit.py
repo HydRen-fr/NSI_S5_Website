@@ -134,117 +134,42 @@ def vigenere_decrypte(text, key):
 
 
 
-# On définit une fonction de géneration de clés RSA
-
-def rsa_keygen(p, q):
-    '''
-    Fonction de génération de clés RSA
-    p (int) : premier nombre premier
-    q (int) : deuxième nombre premier
-    Retourne (tuple) : clés publique et privée sous forme de tuple (e, n), (d, n)
-    '''
-    n = p * q
-    phi = (p - 1) * (q - 1)
-    # Choisissez un entier e tel que e et phi(n) sont copremiers
-    e = 2
-    while gcd(e, phi) != 1:
-        e += 1
-    # Calculer l'exposant secret d tel que d * e = 1 (mod phi(n))
-    d = 1
-    while (d * e) % phi != 1:
-        d += 1
-    return (e, n), (d, n)
-
-# On définit une fonction de cryptage de RSA
-
-def rsa_crypte(text, e, n):
-    '''
-    Fonction de cryptage RSA
-    text (str) : message à crypter
-    e (int) : exposant de cryptage
-    n (int) : module
-    Retourne (str) : message crypté sous forme de nombres separés d'espaces
-    '''
-    # On calcule les codes ASCII de chaque lettre de text
-    text_int = [ord(i) for i in text]
-    # Calculs mathématiques
-    encrypted_text = [pow(i, e, n) for i in text_int]
-    encrypted_text = " ".join(map(str,encrypted_text))
-    return encrypted_text
-
-# On définit une fonction de decryptage de RSA
-
-def rsa_decrypte(encrypted_text, d, n):
-    '''
-    Fonction de décryptage RSA
-    encrypted_text (str) : message crypté sous forme de nombres separés d'espaces
-    d (int) : exposant de décryptage
-    n (int) : module
-    Retourne (str) : message décrypté
-    '''
-    encrypted_text = encrypted_text.split()
-    decrypted_text = [chr(pow(int(i), d, n)) for i in encrypted_text]
-    return ''.join(decrypted_text)
-
-
-
 
 # CODE DU SITE
 
 # Ce code permet de créer une interface pour crypter et décrypter un message en utilisant 
-# différents algorithmes de chiffrement. 
+# différents algorithmes de chiffrement
 # L'utilisateur peut sélectionner l'algorithme de son choix dans un menu déroulant 
-# et entrer le message à crypter ou décrypter dans un champ de texte.
+# et entrer le message à crypter ou décrypter dans un champ de texte
 
 st.sidebar.header("Cryptage/décryptage du message")
 
 st.sidebar.info('Le chiffre de César consiste à décaler chaque lettre du message de N positions dans l\'alphabet')
 st.sidebar.info('Le chiffre de Vigenère consiste à utiliser une clé pour crypter le message avec le chiffre de César')
-st.sidebar.info('RSA est un algorithme de cryptage asymétrique qui utilise une clé publique et une clé privée')
 
-algorithm = st.sidebar.selectbox("Algorithme", ["César", "Vigenère", "RSA Générateur", "RSA"])
+algorithm = st.sidebar.selectbox("Algorithme", ["César", "Vigenère"])
 
 text = st.sidebar.text_input("Message")
 
-# Pour l'algorithme de César, l'utilisateur doit également entrer un décalage. 
+# Pour l'algorithme de César, l'utilisateur doit entrer un décalage
 if algorithm == "César":
     dec = st.sidebar.number_input("Décalage", min_value=0, max_value=25)
 
-# Pour l'algorithme de Vigenère, il doit entrer une clé. 
+# Pour l'algorithme de Vigenère, il doit entrer une clé
 elif algorithm == "Vigenère":
     key = st.sidebar.text_input("Clé")
 
-# Pour l'algorithme RSA, il doit entrer deux nombres premiers.
-elif algorithm == "RSA Générateur":
-    p = st.sidebar.number_input("Nombre premier p", min_value=2, max_value=1000)
-    q = st.sidebar.number_input("Nombre premier q", min_value=2, max_value=1000)
-    # Generate the keys
-    public_key, private_key = rsa_keygen(p, q)
-    st.sidebar.info('Deux clés sont générées pour les nombres premiers p et q choisis. L\'une est publique et sert à crypter. L\'autre est privée et ne doit PAS être divulguée, elle permet le décryptage.')
-    st.write("Clé publique: ", public_key)
-    st.write("Clé privée: ", private_key)
-
-# Pour l'algorithme RSA, il doit entrer deux nombres premiers.
-elif algorithm == "RSA":
-    key = st.sidebar.text_input("Clé publique/privée")
-
 # En cliquant sur les boutons "Crypter" ou "Décrypter", le message est transformé en utilisant l'algorithme sélectionné et 
-# en utilisant les paramètres spécifiés par l'utilisateur. 
+# en utilisant les paramètres spécifiés par l'utilisateur
 
 if st.sidebar.button("Crypter"):
     if algorithm == "César":
         crypte = cesar_crypte(text, dec)
     elif algorithm == "Vigenère":
         crypte = vigenere_crypte(text, key)
-    elif algorithm == "RSA":
-        crypte = rsa_crypte(text, key)
-    st.success(crypte, icon=None)
 
 if st.sidebar.button("Décrypter"):
     if algorithm == "César":
         decrypte = cesar_decrypte(text, dec)
     elif algorithm == "Vigenère":
         decrypte = vigenere_decrypte(text, key)
-    elif algorithm == "RSA":
-        decrypte = rsa_decrypte(text, key)
-    st.success(decrypte, icon=None)
