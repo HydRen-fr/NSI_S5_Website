@@ -202,7 +202,7 @@ st.sidebar.info('Le chiffre de César consiste à décaler chaque lettre du mess
 st.sidebar.info('Le chiffre de Vigenère consiste à utiliser une clé pour crypter le message avec le chiffre de César')
 st.sidebar.info('RSA est un algorithme de cryptage asymétrique qui utilise une clé publique et une clé privée')
 
-algorithm = st.sidebar.selectbox("Algorithme", ["César", "Vigenère", "RSA"])
+algorithm = st.sidebar.selectbox("Algorithme", ["César", "Vigenère", "RSA Générateur", "RSA"])
 
 text = st.sidebar.text_input("Message")
 
@@ -215,13 +215,18 @@ elif algorithm == "Vigenère":
     key = st.sidebar.text_input("Clé")
 
 # Pour l'algorithme RSA, il doit entrer deux nombres premiers.
-elif algorithm == "RSA":
+elif algorithm == "RSA Générateur":
     p = st.sidebar.number_input("Nombre premier p", min_value=2, max_value=1000)
     q = st.sidebar.number_input("Nombre premier q", min_value=2, max_value=1000)
     # Generate the keys
     public_key, private_key = rsa_keygen(p, q)
-    st.write("Clef publique: ", public_key)
-    st.write("Clef privée: ", private_key)
+    st.sidebar.info('Deux clés sont générées pour les nombres premiers p et q choisis. L\'une est publique et sert à crypter. L\'autre est privée et ne doit PAS être divulguée, elle permet le décryptage.')
+    st.write("Clé publique: ", public_key)
+    st.write("Clé privée: ", private_key)
+
+# Pour l'algorithme RSA, il doit entrer deux nombres premiers.
+elif algorithm == "RSA":
+    key = st.sidebar.text_input("Clé publique/privée")
 
 # En cliquant sur les boutons "Crypter" ou "Décrypter", le message est transformé en utilisant l'algorithme sélectionné et 
 # en utilisant les paramètres spécifiés par l'utilisateur. 
@@ -232,7 +237,7 @@ if st.sidebar.button("Crypter"):
     elif algorithm == "Vigenère":
         crypte = vigenere_crypte(text, key)
     elif algorithm == "RSA":
-        crypte = rsa_crypte(text, *public_key)
+        crypte = rsa_crypte(text, key)
     st.success(crypte, icon=None)
 
 if st.sidebar.button("Décrypter"):
@@ -241,5 +246,5 @@ if st.sidebar.button("Décrypter"):
     elif algorithm == "Vigenère":
         decrypte = vigenere_decrypte(text, key)
     elif algorithm == "RSA":
-        decrypte = rsa_decrypte(text, *private_key)
+        decrypte = rsa_decrypte(text, key)
     st.success(decrypte, icon=None)
