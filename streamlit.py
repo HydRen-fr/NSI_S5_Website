@@ -177,4 +177,4 @@ if st.sidebar.button("Décrypter", key="button-decrypter"):
     st.success(result, icon=None)
 
 if st.sidebar.button("Télécharger", key="button-telecharger"):
-    st.download(result, "resultat.txt")
+    st.download_button(result, "resultat.txt")
