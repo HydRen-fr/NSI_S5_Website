@@ -181,7 +181,7 @@ if st.sidebar.button("Décrypter", key="button-decrypter"):
     st.success(st.session_state.result, icon=None)
 
 if st.sidebar.button("Télécharger", key="button-telecharger"):
-    if st.session_state["result"]:
-        st.download_button("resultat.txt", st.session_state.result)
+    if "result" not in st.session_state:
+        st.write("Aucun résultat à télécharger")
     else:
-        st.write("Aucun résultat à télécharger pour l'instant")
+        st.download_button("resultat.txt", st.session_state.result)
