@@ -175,3 +175,11 @@ if st.sidebar.button("Décrypter"):
     elif algorithm == "Vigenère":
         decrypte = vigenere_decrypte(text, key)
     st.success(decrypte, icon=None)
+
+if st.sidebar.button("Télécharger"):
+    if algorithm == "César":
+        result = cesar_crypte(text, dec) if st.sidebar.button("Crypter") else cesar_decrypte(text, dec)
+    elif algorithm == "Vigenère":
+        result = vigenere_crypte(text, key) if st.sidebar.button("Crypter") else vigenere_decrypte(text, key)
+    st.write(result)
+    st.download(result, "resultat.txt")
