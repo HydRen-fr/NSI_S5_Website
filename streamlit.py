@@ -163,18 +163,25 @@ elif algorithm == "Vigenère":
 # en utilisant les paramètres spécifiés par l'utilisateur
 
 if st.sidebar.button("Crypter", key="button-crypter"):
+    if "result" not in st.session_state:
+        st.session_state.result = ""
     if algorithm == "César":
-        result = cesar_crypte(text, dec)
+        st.session_state.result = cesar_crypte(text, dec)
     elif algorithm == "Vigenère":
-        result = vigenere_crypte(text, key)
-    st.success(result, icon=None)
+        st.session_state.result = vigenere_crypte(text, key)
+    st.success(st.session_state.result, icon=None)
 
 if st.sidebar.button("Décrypter", key="button-decrypter"):
+    if "result" not in st.session_state:
+        st.session_state.result = ""
     if algorithm == "César":
-        result = cesar_decrypte(text, dec)
+        st.session_state.result = cesar_decrypte(text, dec)
     elif algorithm == "Vigenère":
-        result = vigenere_decrypte(text, key)
-    st.success(result, icon=None)
+        st.session_state.result = vigenere_decrypte(text, key)
+    st.success(st.session_state.result, icon=None)
 
 if st.sidebar.button("Télécharger", key="button-telecharger"):
-    st.download_button(result, "resultat.txt")
+    if st.session_state.result:
+        st.download_button(st.session_state.result, "resultat.txt")
+    else:
+        st.write("Aucun résultat à télécharger pour l'instant")
